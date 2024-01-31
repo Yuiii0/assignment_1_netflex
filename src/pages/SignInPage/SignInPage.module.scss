@@ -1,0 +1,32 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 1rem;
+  row-gap: 16px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  input {
+    padding: 12px 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+  }
+  input:focus {
+    background-color: gainsboro;
+  }
+  button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 10px;
+    background-color: red;
+    color: white;
+    font-weight: 600;
+  }
+  button:hover {
+    background-color: rgba(255, 0, 0, 0.7);
+  }
+}
