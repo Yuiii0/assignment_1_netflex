@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import getTMDBImgSrc from "../../utils/getTMDBImgSrc";
 // import api from "../../api/api";
 const options = {
   method: "GET",
@@ -40,13 +41,16 @@ function MoviesDetailPage() {
           <h2>{movie.title}</h2>
           <p>{movie.overview}</p>
           <GenreList>
-            {/* {movie.genres.map((genre) => {
+            {/* {movie?.genres.map((genre) => {
               <li key={genre.id}>{genre.name}</li>;
             })} */}
           </GenreList>
           <strong>{movie.vote_average}</strong>
         </MovieTextContainer>
       </Section>
+      <imgSection>
+        <img src={getTMDBImgSrc(movie.backdrop_path)} alt={movie.title} />
+      </imgSection>
     </Wrapper>
   );
 }
@@ -82,4 +86,11 @@ const GenreList = styled.ul`
   display: flex;
   gap: 1rem;
   padding-left: 0;
+`;
+const imgSection = styled.section`
+  img {
+    text-align: center;
+    border-radius: 16px;
+    overflow: hidden;
+  }
 `;

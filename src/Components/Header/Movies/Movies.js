@@ -5,6 +5,9 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { useProfile } from "../../../contexts/Profile.context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { CancleBtn } from "../../../pages/Mypage/MyPage";
 
 const imageOrigin = "https://image.tmdb.org/t/p/w500";
 const options = {
@@ -17,10 +20,10 @@ const options = {
 };
 function Movies({ title, url, isLoggedIn }) {
   const { likedMovies, setLikedMovies } = useProfile();
-  const [movies, setMovies] = useState([]);
-  // const [isLike, setIsLike] = useState(false);
 
-  //좋아요 핸들러
+  const [movies, setMovies] = useState([]);
+
+  //좋아요 handler
   const handleClickLikeBtn = (title, poster) => {
     //중복체크
     if (!likedMovies.some((movie) => movie.title === title)) {
@@ -31,8 +34,13 @@ function Movies({ title, url, isLoggedIn }) {
     }
   };
 
-  //좋아요 취소
-  const handleClickLikeCancleBtn = (movie) => {};
+  //좋아요 취소 handler
+  const handleClickLikeCancleBtn = (movie) => {
+    const { title } = movie;
+    setLikedMovies(
+      likedMovies.filter((likedMovie) => likedMovie.title !== title)
+    );
+  };
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(url, options);
@@ -57,26 +65,27 @@ function Movies({ title, url, isLoggedIn }) {
                 />
                 <h6>{movie?.title}</h6>
               </MovieItem>
-              <LikeBtn
-                onClick={() =>
-                  handleClickLikeBtn(movie.title, movie.poster_path)
-                }
-              >
-                ❤️
-              </LikeBtn>
-              {/* {isLike ? (
-                <LikeBtn onClick={() => handleClickLikeCancleBtn(movie)}>
-                  취소
-                </LikeBtn>
-              ) : (
-                <LikeBtn
+              {!likedMovies.some(
+                (likedMovie) => likedMovie.title === movie.title
+              ) ? (
+                <span
+                  class="material-symbols-outlined"
                   onClick={() =>
-                    handleClickLikeBtn(movie.title, movie.backdrop_path)
+                    handleClickLikeBtn(movie.title, movie.poster_path)
                   }
+                  style={{ color: "red" }}
                 >
-                  ❤️
-                </LikeBtn>
-              )} */}
+                  favorite
+                </span>
+              ) : (
+                <span
+                  class="material-symbols-outlined"
+                  onClick={() => handleClickLikeCancleBtn(movie)}
+                  style={{ color: "red" }}
+                >
+                  heart_check
+                </span>
+              )}
             </MovieContainer>
           </SwiperSlide>
         ))}
@@ -88,7 +97,7 @@ function Movies({ title, url, isLoggedIn }) {
 export default Movies;
 
 const Wrapper = styled.div`
-  padding: 1rem;
+  padding: 3rem;
 
   a {
     color: white;
@@ -147,3 +156,5 @@ const LikeBtn = styled.button`
     color: white;
   }
 `;
+
+const LinkedBtn = styled.div``;

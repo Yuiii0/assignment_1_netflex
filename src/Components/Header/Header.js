@@ -15,21 +15,23 @@ function Header() {
       </Title>
 
       <NavMenu>
-        <NavItem>
-          <Link to="/my-page">My page</Link>
-        </NavItem>
         {isLoggedIn ? (
           <>
             <NavItem>
-              <h5>반가워요 {nickName}님 🤗</h5>
+              <Link to="/my-page">마이 페이지</Link>
             </NavItem>
             <NavItem>
-              <LogOutBtn onClick={logOut}>로그아웃</LogOutBtn>
+              <Hello>반가워요 {nickName}님 🤗</Hello>
+            </NavItem>
+            <NavItem>
+              <LogBtn onClick={logOut}>로그아웃</LogBtn>
             </NavItem>
           </>
         ) : (
           <NavItem>
-            <Link to="/sign-in">로그인하기</Link>
+            <LogBtn>
+              <Link to="/sign-in">로그인</Link>
+            </LogBtn>
           </NavItem>
         )}
       </NavMenu>
@@ -70,14 +72,15 @@ const NavItem = styled.li`
   a {
     color: white;
     text-decoration: none;
-    /* font-size: 18px; */
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 500;
   }
 `;
-const LogOutBtn = styled.button`
+const LogBtn = styled.button`
   border: none;
   border-radius: 8px;
   padding: 6px 12px;
   color: white;
   background-color: red;
 `;
+const Hello = styled.h5``;

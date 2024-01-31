@@ -19,7 +19,6 @@ function MyPage() {
       likedMovies.filter((likedMovie) => likedMovie.title !== title)
     );
   };
-  console.log(likedMovies);
   return (
     <Wrapper>
       <form>
@@ -46,9 +45,13 @@ function MyPage() {
               />
               <TextContainer>
                 <h5>{likeMovie.title}</h5>
-                <CancleBtn onClick={() => handleClickCancleLike(likeMovie)}>
-                  ✂️
-                </CancleBtn>
+                <span
+                  class="material-symbols-outlined"
+                  onClick={() => handleClickCancleLike(likeMovie)}
+                  style={{ color: "red" }}
+                >
+                  heart_minus
+                </span>
               </TextContainer>
             </LikedMovieItem>
           ))}
@@ -105,10 +108,13 @@ const LikedMovieImg = styled.img`
   border-radius: 8px;
 `;
 const TextContainer = styled.div`
+  width: 100%;
   display: flex;
+  gap: 10px;
   justify-content: center;
+  align-items: center;
 `;
-const CancleBtn = styled.button`
+export const CancleBtn = styled.button`
   background-color: transparent;
   border: none;
   padding: 0 10px;

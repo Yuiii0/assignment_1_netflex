@@ -22,7 +22,7 @@ function SignInPage() {
   return (
     <div>
       {isLoggedIn ? (
-        <div>로그인 성공</div>
+        <h2 style={{ textAlign: "center" }}>로그인 성공</h2>
       ) : (
         <form className={styles.form}>
           <input
