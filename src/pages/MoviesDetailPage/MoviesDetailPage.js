@@ -2,23 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import getTMDBImgSrc from "../../utils/getTMDBImgSrc";
+import { useProfile } from "../../contexts/Profile.context";
 // import api from "../../api/api";
 const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNGNiZjJkZTdhYTk5NDBmZGQyYTRjMjcwZWIxYjU1OSIsInN1YiI6IjY1MDU5NDExNDJkOGE1MDBhYmIzNTBiZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nRdw47sDfUd039YGLbSp5Tx23bOThGP0rrndahvV7xQ",
+    Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
   },
 };
 function MoviesDetailPage() {
   const { movieId } = useParams();
+  const { likedMovies, handleClickLikeBtn, handleClickCancleLike } =
+    useProfile();
   const [movie, setMovie] = useState({});
 
   //gegMovie(movieId)로 변경
   // useEffect(() => {
-  //   api.movies.getMovie(movieId).then((movie)=>setMovie(movie));
-  // }, []);
+  //   api.movies.getMovie(movieId).then((movie) => setMovie(movie));
+  // }, [movieId]);
+
   useEffect(() => {
     fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
@@ -28,6 +31,15 @@ function MoviesDetailPage() {
       .then((movie) => setMovie(movie));
   }, [movieId]);
   if (movie === null) return null;
+  //좋아요
+  const handleClickLike = (movie) => {
+    handleClickLikeBtn(movie);
+  };
+  //좋아요 취소
+  const handleclickCancel = (movie) => {
+    handleClickCancleLike(movie);
+  };
+
   return (
     <Wrapper>
       <Section>
@@ -39,6 +51,25 @@ function MoviesDetailPage() {
         </PostImg>
         <MovieTextContainer>
           <h2>{movie.title}</h2>
+          {!likedMovies.some(
+            (likedMovie) => likedMovie.title === movie.title
+          ) ? (
+            <span
+              class="material-symbols-outlined"
+              onClick={() => handleClickLike(movie)}
+              style={{ color: "red" }}
+            >
+              favorite
+            </span>
+          ) : (
+            <span
+              class="material-symbols-outlined"
+              onClick={() => handleclickCancel(movie)}
+              style={{ color: "red", cursor: "pointer" }}
+            >
+              heart_check
+            </span>
+          )}
           <p>{movie.overview}</p>
           <GenreList>
             {/* {movie?.genres.map((genre) => {

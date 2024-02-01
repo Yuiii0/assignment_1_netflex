@@ -14,33 +14,29 @@ const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNGNiZjJkZTdhYTk5NDBmZGQyYTRjMjcwZWIxYjU1OSIsInN1YiI6IjY1MDU5NDExNDJkOGE1MDBhYmIzNTBiZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nRdw47sDfUd039YGLbSp5Tx23bOThGP0rrndahvV7xQ",
+    Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
   },
 };
 function Movies({ title, url, isLoggedIn }) {
-  const { likedMovies, setLikedMovies } = useProfile();
+  const {
+    likedMovies,
+    setLikedMovies,
+    handleClickLikeBtn,
+    handleClickCancleLike,
+  } = useProfile();
 
   const [movies, setMovies] = useState([]);
 
-  //좋아요 handler
-  const handleClickLikeBtn = (title, poster) => {
-    //중복체크
-    if (!likedMovies.some((movie) => movie.title === title)) {
-      setLikedMovies([
-        ...likedMovies,
-        { Liked: true, title: title, poster: poster },
-      ]);
-    }
+  //좋아요
+  const handleClickLike = (movie) => {
+    handleClickLikeBtn(movie);
   };
 
-  //좋아요 취소 handler
-  const handleClickLikeCancleBtn = (movie) => {
-    const { title } = movie;
-    setLikedMovies(
-      likedMovies.filter((likedMovie) => likedMovie.title !== title)
-    );
+  //좋아요 취소
+  const handleclickCancel = (movie) => {
+    handleClickCancleLike(movie);
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(url, options);
@@ -70,18 +66,16 @@ function Movies({ title, url, isLoggedIn }) {
               ) ? (
                 <span
                   class="material-symbols-outlined"
-                  onClick={() =>
-                    handleClickLikeBtn(movie.title, movie.poster_path)
-                  }
-                  style={{ color: "red" }}
+                  onClick={() => handleClickLike(movie)}
+                  style={{ color: "red", cursor: "pointer" }}
                 >
                   favorite
                 </span>
               ) : (
                 <span
                   class="material-symbols-outlined"
-                  onClick={() => handleClickLikeCancleBtn(movie)}
-                  style={{ color: "red" }}
+                  onClick={() => handleclickCancel(movie)}
+                  style={{ color: "red", cursor: "pointer" }}
                 >
                   heart_check
                 </span>
@@ -139,6 +133,11 @@ const MovieImg = styled.img`
   object-fit: cover;
   width: 200px;
   border-radius: 4px;
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const LikeBtn = styled.button`

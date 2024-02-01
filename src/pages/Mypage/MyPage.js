@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useProfile } from "../../contexts/Profile.context";
 import getTMDBImgSrc from "../../utils/getTMDBImgSrc";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 function MyPage() {
-  const { nickName, setNickName, likedMovies, setLikedMovies } = useProfile();
+  const { nickName, setNickName, likedMovies, handleClickCancleLike } =
+    useProfile();
   const [inputNickName, setInputNickName] = useState("");
 
   const handleClickNickName = (e) => {
@@ -12,13 +14,10 @@ function MyPage() {
     setNickName(inputNickName);
   };
 
-  const handleClickCancleLike = (movie) => {
-    const { title } = movie;
-
-    setLikedMovies(
-      likedMovies.filter((likedMovie) => likedMovie.title !== title)
-    );
+  const handleclickCancel = (movie) => {
+    handleClickCancleLike(movie);
   };
+
   return (
     <Wrapper>
       <form>
@@ -47,7 +46,7 @@ function MyPage() {
                 <h5>{likeMovie.title}</h5>
                 <span
                   class="material-symbols-outlined"
-                  onClick={() => handleClickCancleLike(likeMovie)}
+                  onClick={() => handleclickCancel(likeMovie)}
                   style={{ color: "red" }}
                 >
                   heart_minus
@@ -105,7 +104,10 @@ const LikedMovieItem = styled.li`
 `;
 const LikedMovieImg = styled.img`
   width: 200px;
+  height: 300px;
+
   border-radius: 8px;
+  object-fit: cover;
 `;
 const TextContainer = styled.div`
   width: 100%;
